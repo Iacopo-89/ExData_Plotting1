@@ -1,0 +1,17 @@
+getwd()
+file <- "C:/Users/Iacopo/Documents/household_power_consumption.txt"
+data <- read.table(file, sep=";", header=TRUE, na.strings="?")
+data <- data[grep("^1/2/2007$|^2/2/2007$",data$Date),]
+data$Date <- strptime(paste(data$Date,data$Time), "%d/%m/%Y %H:%M:%S")
+Sys.setlocale(category = "LC_ALL", locale = "English_United States.1252")
+par(mfcol=c(2,2))
+par(mar=c(5, 4, 4, 2))
+plot(data$Date,data$Global_active_power, type="l",ylab="Global Active Power",xlab="")
+plot(data$Date,data$Sub_metering_1, type="l",ylab="Energy sub metering",xlab="")
+lines(data$Date,data$Sub_metering_2, type="l", col="red")
+lines(data$Date,data$Sub_metering_3, type="l", col="blue")
+legend("topright", box.lwd=0, legend=names(data[7:9]), bty="n", lty=1, col=c("black","red","blue"), cex=0.65, xpd=NA)
+plot(data$Date,data$Voltage, type="l",ylab="Voltage",xlab="datetime")
+plot(data$Date,data$Global_reactive_power, type="l",ylab="Global_reactive_power",xlab="datetime")
+png("plot4.png", width = 480, height = 480)
+dev.off()
